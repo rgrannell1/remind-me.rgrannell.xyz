@@ -18,13 +18,18 @@
         <button type="submit">Set Reminder</button>
     </form>
 
-    <script>
-      if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('sw.js')
-              .then(() => console.log('Service Worker registered successfully'))
-              .catch(err => console.error('Service Worker registration failed:', err));
+    <script type="module">
+      if (!('serviceWorker' in navigator)) {
+          console.error('Service Worker is not supported in this browser');
+      }
+
+      try {
+        await navigator.serviceWorker.register('sw.js')
+        console.log('Service Worker registered successfully')
+      } catch (err) {
+        console.error('Service Worker registration failed:', err)
       }
     </script>
-    <script src="index.js"></script>
+    <script src="index.js"> type="module"></script>
 </body>
 </html>

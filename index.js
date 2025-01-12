@@ -49,7 +49,6 @@ async function onFormSubmit(event) {
 
 /*
  * Respond to a service-worker message with a progress update
- *
  */
 function onServiceWorkerMessage(event) {
   console.log("Message received from service worker: ", event.data);
