@@ -7,6 +7,7 @@ async function perMinute(state) {
 
   const stillWaiting = state.remainingMinutes > 0;
 
+  // post updates back to the main thread
   if (stillWaiting) {
     state.remainingMinutes -= 1;
 
