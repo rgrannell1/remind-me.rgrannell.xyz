@@ -39,7 +39,7 @@ async function perMinute(state) {
 }
 
 function onSetReminder(event) {
-  const { id, time } = event.data;
+  const { id, time, message } = event.data;
 
   let state = {
     remainingMinutes: time,
