@@ -2,11 +2,6 @@ const APP_TITLE = "remind-me";
 
 const timers = {};
 
-function setImmediateInterval(fn, interval) {
-  fn();
-  return setInterval(fn, interval);
-}
-
 async function perMinute(state) {
   const clients = await self.clients.matchAll();
 
@@ -53,7 +48,7 @@ function onSetReminder(event) {
     id
   };
 
-  const interval = setImmediateInterval(() => perMinute(state), 60_000);
+  const interval = setInterval(() => perMinute(state), 60_000);
   state.interval = interval;
 
   timers[id] = interval;
