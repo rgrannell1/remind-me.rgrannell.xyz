@@ -2,6 +2,11 @@ const APP_TITLE = "remind-me";
 
 const timers = {};
 
+function setImmediateInterval(fn, interval) {
+  fn();
+  return setInterval(fn, interval);
+}
+
 async function perMinute(state) {
   const clients = await self.clients.matchAll();
 
@@ -14,7 +19,7 @@ async function perMinute(state) {
     clients.forEach((client) => {
       client.postMessage({
         type: "update-reminder",
-        id,
+        id: state.id,
         remainingMinutes: state.remainingMinutes,
       });
     });
@@ -22,19 +27,19 @@ async function perMinute(state) {
     return;
   }
 
-  clearInterval(interval);
-  delete timers[id];
+  clearInterval(timers[state.interval]);
+  delete timers[state.interval];
 
   self.registration.showNotification(APP_TITLE, {
-    body: message,
+    body: state.message,
     vibrate: [200, 100, 200],
-    tag: id,
+    tag: state.id,
   });
 
   clients.forEach((client) => {
     client.postMessage({
       type: "reminder-complete",
-      id,
+      id: state.id,
     });
   });
 }
@@ -45,9 +50,11 @@ function onSetReminder(event) {
   let state = {
     remainingMinutes: time,
     message,
+    id
   };
 
-  const interval = setInterval(perMinute.bind(state, null), 60_000);
+  const interval = setImmediateInterval(() => perMinute(state), 60_000);
+  state.interval = interval;
 
   timers[id] = interval;
 }

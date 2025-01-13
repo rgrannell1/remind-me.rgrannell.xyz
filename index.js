@@ -1,3 +1,17 @@
+
+function checkServiceWorker() {
+  if (!('serviceWorker' in navigator)) {
+    console.error('Service Worker is not supported in this browser');
+  }
+
+  try {
+    return navigator.serviceWorker.register('/sw.js')
+    console.log('Service Worker registered successfully')
+  } catch (err) {
+    console.error('Service Worker registration failed:', err)
+  }
+}
+
 /*
  * Check if the browser supports service workers
  */
@@ -70,3 +84,5 @@ document.getElementById("reminder-form").addEventListener(
 );
 
 navigator.serviceWorker.addEventListener("message", onServiceWorkerMessage);
+
+await checkServiceWorker();
